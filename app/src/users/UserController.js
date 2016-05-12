@@ -5,6 +5,10 @@
       .controller('DemoCtrl', DemoCtrl);
   function DemoCtrl($mdDialog,$mdToast) {
     var self = this;
+    self.showTooltip = function(){
+      console.log("in show tool");
+      return false;
+    };
     self.openDialog = function($event) {
       $mdDialog.show({
         controller: DialogCtrl,
@@ -21,6 +25,8 @@
     // list of `state` value/display objects
     self.states        = loadAll();
     self.querySearch   = querySearch;
+
+
 
     console.log(sharedProperties.getProperty1()," get the prop1");
     // ******************************
@@ -162,7 +168,20 @@ angular
         { category: 'veg', name: 'Green Pepper' },
         { category: 'veg', name: 'Green Olives' }
       ];
+
+      $scope.sizes1 = [
+        { category: 'meat', name: 'Pepperoni' },
+        { category: 'meat', name: 'Sausage' },
+        { category: 'meat', name: 'Ground Beef' },
+        { category: 'meat', name: 'Bacon' },
+        { category: 'veg', name: 'Mushrooms' },
+        { category: 'veg', name: 'Onion' },
+        { category: 'veg', name: 'Green Pepper' },
+        { category: 'veg', name: 'Green Olives' }
+      ];
       $scope.selectedToppings = '';
+      $scope.size = '';
+      $scope.size1 = '';
 
       $scope.selectChanged1 = function(){
         console.log("in selectChanged1",$scope.sizee);

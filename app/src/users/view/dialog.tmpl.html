@@ -11,7 +11,7 @@
     <div class="md-dialog-content">
       <form ng-submit="$event.preventDefault()">
         <p>Use <code>md-autocomplete</code> to search for matches from local or remote data sources.
-          <md-tooltip hide md-direction="left">
+          <md-tooltip ng-show="showTooltip()" md-direction="left">
             Refresh
           </md-tooltip>
         </p>
@@ -35,25 +35,27 @@
           <div>
             <h1 class="md-title">Pick your pizza below</h1>
             <div layout="row">
-              <md-input-container style="margin-right: 10px;">
-                <label>Size</label>
-                <md-select ng-model="size">
-                  <md-option ng-repeat="size in sizes" value="{{size}}">{{size}}</md-option>
+              <md-input-container>
+                <label>Size Again</label>
+                <md-select ng-model="size1">
+                  <md-optgroup label="Sizes">
+                    <md-option ng-value="size.category" ng-repeat="size in sizes1 | filter: {name: selectedToppings } | unique:'category'">{{size.category}}</md-option>
+                  </md-optgroup>
                 </md-select>
               </md-input-container>
+
               <md-input-container>
                 <label>Topping</label>
                 <md-select ng-model="selectedToppings" ng-change="selectChanged2()">
                   <md-optgroup label="Subcategory">
-                    <md-option ng-value="topping.name" ng-repeat="topping in toppings | filter: {category: size }">{{topping.name}}</md-option>
+                    <md-option ng-value="topping.name" ng-repeat="topping in toppings | filter: {category: size1 }">{{topping.name}}</md-option>
                   </md-optgroup>
-                  <!-- <md-optgroup label="Veggies">
-                    <md-option ng-value="topping.name" ng-repeat="topping in toppings | filter: {category: size }">{{topping.name}}</md-option>
-                  </md-optgroup> -->
                 </md-select>
               </md-input-container>
+
+
             </div>
-            <p ng-if="selectedToppings">You ordered a {{size.toLowerCase()}} pizza with
+            <p ng-if="selectedToppings">You ordered a {{size1.toLowerCase()}} pizza with
             {{selectedToppings.toLowerCase()}}.</p>
           </div>
         </div>
