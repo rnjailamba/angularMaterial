@@ -51,7 +51,7 @@
         if(!checkSelect){
           console.log("enter select",checkSelect);
           $timeout(function(){
-            self.showTooltip1 = true;
+            self.showTooltip1  = true;
           }, 500);
         }
 
@@ -176,6 +176,10 @@ angular
       ];
       $scope.selectedToppings = '';
       $scope.size1 = '';
+      $scope.clearValue = function() {
+        $scope.size1 = undefined;
+        $scope.selectedToppings = undefined;
+      };
 
       console.log(sharedProperties.getProperty1()," get the prop1");
 

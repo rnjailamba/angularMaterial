@@ -59,10 +59,14 @@
               </md-input-container>
 
 
+
             </div>
-            <p ng-if="selectedToppings">You ordered a {{size1.toLowerCase()}} pizza with
-            {{selectedToppings.toLowerCase()}}.</p>
-          </div>
+              <p ng-if="selectedToppings">You ordered a {{size1.toLowerCase()}} pizza with
+                {{selectedToppings.toLowerCase()}}.</p>
+            </div>
+            <div layout="row">
+              <md-button ng-click="clearValue()" ng-disabled="!size1 && !selectedToppings" style="margin-right: 20px;">Clear</md-button>
+            </div>
         </div>
 
 <!--         <div layout="row" id="toastBounds">
