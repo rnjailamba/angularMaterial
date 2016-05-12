@@ -11,8 +11,8 @@
     <div class="md-dialog-content">
       <form ng-submit="$event.preventDefault()">
         <p>Use <code>md-autocomplete</code> to search for matches from local or remote data sources.
-          <md-tooltip ng-show="showTooltip()" md-direction="left">
-            Refresh
+          <md-tooltip ng-if="ctrl.showTooltip" md-visible="ctrl.showTooltip" md-direction="left">
+            You have NOT entered something from the list.
           </md-tooltip>
         </p>
         <md-autocomplete
@@ -33,11 +33,16 @@
 
         <div ng-controller="SelectOptGroupController" class="md-padding" ng-cloak>
           <div>
-            <h1 class="md-title">Pick your pizza below</h1>
+            <h1 class="md-title">Select category and subcategory below
+              <md-tooltip ng-if="ctrl.showTooltip1" md-visible="ctrl.showTooltip1" md-direction="left">
+                Please select from both dropdowns
+              </md-tooltip>
+
+            </h1>
             <div layout="row">
               <md-input-container>
                 <label>Size Again</label>
-                <md-select ng-model="size1">
+                <md-select ng-model="size1" ng-change="selectChanged1()">
                   <md-optgroup label="Sizes">
                     <md-option ng-value="size.category" ng-repeat="size in sizes1 | filter: {name: selectedToppings } | unique:'category'">{{size.category}}</md-option>
                   </md-optgroup>

@@ -5,10 +5,6 @@
       .controller('DemoCtrl', DemoCtrl);
   function DemoCtrl($mdDialog,$mdToast) {
     var self = this;
-    self.showTooltip = function(){
-      console.log("in show tool");
-      return false;
-    };
     self.openDialog = function($event) {
       $mdDialog.show({
         controller: DialogCtrl,
@@ -28,7 +24,7 @@
 
 
 
-    console.log(sharedProperties.getProperty1()," get the prop1");
+
     // ******************************
     // Template methods
     // ******************************
@@ -37,43 +33,42 @@
     };
     self.finish = function($event) {
       // console.log(self.searchText,"attempt to shut");
-      var shouldOpen = checkAutocompleteEntry();
-      console.log(shouldOpen);
-      if(shouldOpen.bool){
+      var checkAuto = checkAutocompleteEntry();
+      var checkSelect = checkSelectEntry();
+      console.log(checkAuto);
+      if(checkAuto.bool && checkSelect){
         $mdDialog.hide();
       }
       else{
         var el = angular.element(document.getElementById('toastBounds'));
-        showCustomToast(el,shouldOpen.msg);
+        showCustomToastBelowButton(el,checkAuto.msg);
+        if(!checkAuto.bool){
+          $timeout(function(){
+            self.showTooltip = true;
+          }, 500);
+        }
+
+        if(!checkSelect){
+          console.log("enter select",checkSelect);
+          $timeout(function(){
+            self.showTooltip1 = true;
+          }, 500);
+        }
+
 
       }
-      // console.log(array);
-
-      // $mdDialog.hide();
     };
 
-    function showCustomToast(el,msg) {
-      var toast1 = $mdToast.simple()
-        .content(msg)
-        .action('OK')
-        .highlightAction(true)
-        .hideDelay(0)
-        .position('right')
-        .parent($document[0].querySelector('#toastBounds1'));
-
-      var toast = $mdToast.simple()
-        .content("There were issues in filling the form.Please click ok to check errors")
-        .action('OK')
-        .highlightAction(true)
-        .hideDelay(0)
-        .position('right')
-        .parent($document[0].querySelector('#toastBounds1'));
-
-      // $mdToast.show(toast1);
-      $mdToast.show(toast).then(function() {
-        $mdToast.show(toast1);
-      });
-    };
+    function checkSelectEntry(){
+      var select1 = sharedProperties.getProperty1();
+      var select2 = sharedProperties.getProperty2();
+      if(select1 && select2){
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
 
     function showCustomToastBelowButton(el,msg) {
       var toast = $mdToast.simple()
@@ -152,7 +147,7 @@
 
 angular
     .module('starterApp')
-    .controller('SelectOptGroupController', function($scope) {
+    .controller('SelectOptGroupController', function($scope,sharedProperties) {
       $scope.sizes = [
         "meat",
         "veg"
@@ -180,14 +175,18 @@ angular
         { category: 'veg', name: 'Green Olives' }
       ];
       $scope.selectedToppings = '';
-      $scope.size = '';
       $scope.size1 = '';
 
+      console.log(sharedProperties.getProperty1()," get the prop1");
+
+
       $scope.selectChanged1 = function(){
-        console.log("in selectChanged1",$scope.sizee);
+        console.log("in selectChanged1",$scope.size1);
+        sharedProperties.setProperty1($scope.size1);
       };
       $scope.selectChanged2 = function(){
         console.log("in selectChanged2",$scope.selectedToppings);
+        sharedProperties.setProperty2($scope.selectedToppings);
       };
 
 

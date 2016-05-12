@@ -1,8 +1,8 @@
 angular
     .module('starterApp')
     .service('sharedProperties', function () {
-    var select1 = '1';
-    var select2 = '2';
+    var select1 = '';
+    var select2 = '';
 
     return {
         getProperty1: function () {
