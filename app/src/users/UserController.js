@@ -30,45 +30,71 @@
     self.finish = function($event) {
       console.log(self.searchText,"attempt to shut");
       var shouldOpen = checkAutocompleteEntry();
-      if(shouldOpen){
+      console.log(shouldOpen);
+      if(shouldOpen.bool){
         $mdDialog.hide();
       }
       else{
         var el = angular.element(document.getElementById('toastBounds'));
-        console.log("fdfd");
-        showCustomToast(el);
+        showCustomToast(el,shouldOpen.msg);
+           
       }
       // console.log(array);
 
       // $mdDialog.hide();
     };
 
-    function showCustomToast(el) {
+    function showCustomToast(el,msg) {
+      var toast1 = $mdToast.simple()
+        .content(msg)
+        .action('OK') 
+        .highlightAction(true)
+        .hideDelay(0)
+        .position('right')
+        .parent($document[0].querySelector('#toastBounds1'));
+
       var toast = $mdToast.simple()
-        .content("bla")
+        .content("There were issues in filling the form.Please click ok to check errors")
         .action('OK')
         .highlightAction(true)
         .hideDelay(0)
-        .position('top right')
-        .parent($document[0].querySelector('#toastBounds'));
+        .position('right')
+        .parent($document[0].querySelector('#toastBounds1'));        
+
+      // $mdToast.show(toast1);    
+      $mdToast.show(toast).then(function() {
+        $mdToast.show(toast1); 
+      });
+    };    
+
+    function showCustomToastBelowButton(el,msg) {
+      var toast = $mdToast.simple()
+        .content("There were issues in filling the form.Please click ok to see the issues")
+        .action('OK')
+        .highlightAction(true)
+        .hideDelay(0)
+        .position('right')
+        .parent($document[0].querySelector('#toastBounds1'));
 
       $mdToast.show(toast);      
-    };    
+    };        
 
     function checkAutocompleteEntry(){
 
       var array = (self.states);
-      var bool = false;
+      var returnMsg = {};
+      returnMsg.bool = false;
       for (var i = array.length - 1; i >= 0; i--) {
         if( (self.searchText == array[i].value) || (self.searchText == array[i].display) ){
-          console.log("you have entered something from the list");
-          bool = true;
+          returnMsg.bool = true;
+          returnMsg.msg = "you have entered something from the list";
         }
       };
-      if( bool == false ){
-          console.log("you have NOT entered something from the list");
+      if( returnMsg.bool == false ){
+          returnMsg.bool = false;
+          returnMsg.msg = "you have NOT entered something from the list";
       }
-      return bool;      
+      return returnMsg;      
 
     }
     // ******************************
