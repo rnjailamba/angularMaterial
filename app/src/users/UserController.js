@@ -16,11 +16,13 @@
       })
     }
   }
-  function DialogCtrl ($timeout, $q, $scope, $mdDialog, $mdToast, $document) {
+  function DialogCtrl ($timeout, $q, $scope, $mdDialog, $mdToast, $document, sharedProperties) {
     var self = this;
     // list of `state` value/display objects
     self.states        = loadAll();
     self.querySearch   = querySearch;
+
+    console.log(sharedProperties.getProperty1()," get the prop1");
     // ******************************
     // Template methods
     // ******************************
@@ -28,7 +30,7 @@
       $mdDialog.cancel();
     };
     self.finish = function($event) {
-      console.log(self.searchText,"attempt to shut");
+      // console.log(self.searchText,"attempt to shut");
       var shouldOpen = checkAutocompleteEntry();
       console.log(shouldOpen);
       if(shouldOpen.bool){
@@ -37,7 +39,7 @@
       else{
         var el = angular.element(document.getElementById('toastBounds'));
         showCustomToast(el,shouldOpen.msg);
-           
+
       }
       // console.log(array);
 
@@ -47,7 +49,7 @@
     function showCustomToast(el,msg) {
       var toast1 = $mdToast.simple()
         .content(msg)
-        .action('OK') 
+        .action('OK')
         .highlightAction(true)
         .hideDelay(0)
         .position('right')
@@ -59,13 +61,13 @@
         .highlightAction(true)
         .hideDelay(0)
         .position('right')
-        .parent($document[0].querySelector('#toastBounds1'));        
+        .parent($document[0].querySelector('#toastBounds1'));
 
-      // $mdToast.show(toast1);    
+      // $mdToast.show(toast1);
       $mdToast.show(toast).then(function() {
-        $mdToast.show(toast1); 
+        $mdToast.show(toast1);
       });
-    };    
+    };
 
     function showCustomToastBelowButton(el,msg) {
       var toast = $mdToast.simple()
@@ -76,8 +78,8 @@
         .position('right')
         .parent($document[0].querySelector('#toastBounds1'));
 
-      $mdToast.show(toast);      
-    };        
+      $mdToast.show(toast);
+    };
 
     function checkAutocompleteEntry(){
 
@@ -94,7 +96,7 @@
           returnMsg.bool = false;
           returnMsg.msg = "you have NOT entered something from the list";
       }
-      return returnMsg;      
+      return returnMsg;
 
     }
     // ******************************
@@ -139,3 +141,36 @@
   }
 
 })();
+
+
+
+angular
+    .module('starterApp')
+    .controller('SelectOptGroupController', function($scope) {
+      $scope.sizes = [
+        "meat",
+        "veg"
+
+      ];
+      $scope.toppings = [
+        { category: 'meat', name: 'Pepperoni' },
+        { category: 'meat', name: 'Sausage' },
+        { category: 'meat', name: 'Ground Beef' },
+        { category: 'meat', name: 'Bacon' },
+        { category: 'veg', name: 'Mushrooms' },
+        { category: 'veg', name: 'Onion' },
+        { category: 'veg', name: 'Green Pepper' },
+        { category: 'veg', name: 'Green Olives' }
+      ];
+      $scope.selectedToppings = '';
+
+      $scope.selectChanged1 = function(){
+        console.log("in selectChanged1",$scope.sizee);
+      };
+      $scope.selectChanged2 = function(){
+        console.log("in selectChanged2",$scope.selectedToppings);
+      };
+
+
+
+    });
