@@ -3,7 +3,7 @@
     <div class="md-toolbar-tools">
       <h2>Autocomplete Dialog Example</h2>
       <span flex></span>
-      <md-button class="md-icon-button" ng-click="ctrl.cancel()">
+      <md-button class="md-icon-button" ng-click="ctrl.cancel()" aria-label="Shut">
       </md-button>
     </div>
   </md-toolbar>
@@ -29,6 +29,21 @@
     </div>
   </md-dialog-content>
   <md-dialog-actions>
-    <md-button aria-label="Finished" ng-click="ctrl.finish($event)">Finished</md-button>
+    <md-button aria-label="Finished"  ng-click="ctrl.finish($event)">Finished</md-button>
   </md-dialog-actions>
+
+  <md-dialog-actions>
+        <div layout="row" id="toastBounds">
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+        </div>
+  </md-dialog-actions>
+
+
+
+
 </md-dialog>

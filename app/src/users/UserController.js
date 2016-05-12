@@ -3,7 +3,7 @@
   angular
       .module('starterApp')
       .controller('DemoCtrl', DemoCtrl);
-  function DemoCtrl($mdDialog) {
+  function DemoCtrl($mdDialog,$mdToast) {
     var self = this;
     self.openDialog = function($event) {
       $mdDialog.show({
@@ -16,7 +16,7 @@
       })
     }
   }
-  function DialogCtrl ($timeout, $q, $scope, $mdDialog) {
+  function DialogCtrl ($timeout, $q, $scope, $mdDialog, $mdToast, $document) {
     var self = this;
     // list of `state` value/display objects
     self.states        = loadAll();
@@ -29,8 +29,48 @@
     };
     self.finish = function($event) {
       console.log(self.searchText,"attempt to shut");
+      var shouldOpen = checkAutocompleteEntry();
+      if(shouldOpen){
+        $mdDialog.hide();
+      }
+      else{
+        var el = angular.element(document.getElementById('toastBounds'));
+        console.log("fdfd");
+        showCustomToast(el);
+      }
+      // console.log(array);
+
       // $mdDialog.hide();
     };
+
+    function showCustomToast(el) {
+      var toast = $mdToast.simple()
+        .content("bla")
+        .action('OK')
+        .highlightAction(true)
+        .hideDelay(0)
+        .position('top right')
+        .parent($document[0].querySelector('#toastBounds'));
+
+      $mdToast.show(toast);      
+    };    
+
+    function checkAutocompleteEntry(){
+
+      var array = (self.states);
+      var bool = false;
+      for (var i = array.length - 1; i >= 0; i--) {
+        if( (self.searchText == array[i].value) || (self.searchText == array[i].display) ){
+          console.log("you have entered something from the list");
+          bool = true;
+        }
+      };
+      if( bool == false ){
+          console.log("you have NOT entered something from the list");
+      }
+      return bool;      
+
+    }
     // ******************************
     // Internal methods
     // ******************************
@@ -71,4 +111,5 @@
       };
     }
   }
+
 })();
